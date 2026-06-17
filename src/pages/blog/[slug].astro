@@ -39,6 +39,7 @@ const toc = headings
 const related = await relatedPosts(post);
 const { prev, next } = await adjacentPosts(post);
 const canonical = `/blog/${post.slug}`;
+const shareUrl = SITE.url ? new URL(canonical, SITE.url).toString() : canonical;
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
@@ -134,8 +135,8 @@ const jsonLd = {
 
         <div class="mt-8 flex items-center gap-2 border-y border-border py-4">
           <span class="text-xs uppercase tracking-wider text-muted-foreground">Share</span>
-          <a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}`} class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:text-primary"><Icon name="twitter" class="h-3.5 w-3.5" /></a>
-          <a target="_blank" rel="noreferrer" href="https://www.linkedin.com/sharing/share-offsite/?url=" class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:text-primary"><Icon name="link" class="h-3.5 w-3.5" /></a>
+          <a target="_blank" rel="noreferrer" aria-label="Share on Twitter" data-share-twitter data-share-title={post.title} href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`} class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:text-primary"><Icon name="twitter" class="h-3.5 w-3.5" /></a>
+          <a target="_blank" rel="noreferrer" aria-label="Share on LinkedIn" data-share-linkedin href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`} class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground hover:text-primary"><Icon name="linkedin" class="h-3.5 w-3.5" /></a>
           <button type="button" data-copy-link class="ml-auto inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground">
             <span data-copy-ready class="inline-flex items-center gap-2"><Icon name="copy" class="h-3.5 w-3.5" /> Copy link</span>
             <span data-copy-done class="inline-flex items-center gap-2" hidden><Icon name="check" class="h-3.5 w-3.5" /> Copied</span>
@@ -222,6 +223,23 @@ const jsonLd = {
 
   const copyIcon = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
   const checkIcon = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>';
+  const twitterShare = document.querySelector("[data-share-twitter]");
+  const linkedinShare = document.querySelector("[data-share-linkedin]");
+  const currentUrl = window.location.href;
+
+  if (twitterShare) {
+    const title = twitterShare.dataset.shareTitle || document.title;
+    twitterShare.setAttribute(
+      "href",
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(currentUrl)}`,
+    );
+  }
+
+  linkedinShare?.setAttribute(
+    "href",
+    `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`,
+  );
+
   const writeClipboard = async (text) => {
     if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(text);
