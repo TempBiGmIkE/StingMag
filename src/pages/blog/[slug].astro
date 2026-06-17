@@ -112,7 +112,7 @@ const jsonLd = {
     }
 
     <div class="mt-12 grid gap-12 lg:grid-cols-[1fr_220px]">
-      <div class="mx-auto w-full max-w-2xl">
+      <div class="mx-auto w-full min-w-0 max-w-2xl">
         <div class="prose-article">
           <Content />
         </div>
@@ -219,10 +219,30 @@ const jsonLd = {
   updateProgress();
   window.addEventListener("scroll", updateProgress, { passive: true });
 
+  const copyIcon = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>';
+  const checkIcon = '<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>';
+  const writeClipboard = async (text) => {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.inset = "0 auto auto 0";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+  };
+
   const copyButton = document.querySelector("[data-copy-link]");
   copyButton?.addEventListener("click", async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await writeClipboard(window.location.href);
       const ready = copyButton.querySelector("[data-copy-ready]");
       const done = copyButton.querySelector("[data-copy-done]");
       if (ready && done) {
@@ -234,5 +254,40 @@ const jsonLd = {
         }, 2000);
       }
     } catch (error) {}
+  });
+
+  document.querySelectorAll(".prose-article pre").forEach((pre) => {
+    if (pre.parentElement?.classList.contains("code-block")) return;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "code-block";
+    pre.parentNode?.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "code-copy-button";
+    button.dataset.tooltip = "Copy code";
+    button.setAttribute("aria-label", "Copy code");
+    button.innerHTML = copyIcon;
+    wrapper.appendChild(button);
+
+    let resetTimer;
+    button.addEventListener("click", async () => {
+      try {
+        await writeClipboard(pre.textContent ?? "");
+        window.clearTimeout(resetTimer);
+        button.classList.add("is-copied");
+        button.dataset.tooltip = "Copied";
+        button.setAttribute("aria-label", "Copied");
+        button.innerHTML = checkIcon;
+        resetTimer = window.setTimeout(() => {
+          button.classList.remove("is-copied");
+          button.dataset.tooltip = "Copy code";
+          button.setAttribute("aria-label", "Copy code");
+          button.innerHTML = copyIcon;
+        }, 1800);
+      } catch (error) {}
+    });
   });
 </script>
