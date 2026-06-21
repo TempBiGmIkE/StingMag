@@ -8,24 +8,24 @@ const siteUrl = (
 
 export const authors = [
   {
-    slug: "elena-march",
-    name: "Elena March",
+    slug: "BMF MYK",
+    name: "BMF MYK",
     bio: "Writer & editor covering design, craft, and slow technology.",
     longBio:
       "Elena March writes about the quiet edges of design and technology. Previously an editor at two small magazines, she now publishes essays and field notes from a desk overlooking the harbour.",
     avatar: "https://i.pravatar.cc/200?img=47",
   },
   {
-    slug: "samuel-okafor",
-    name: "Samuel Okafor",
+    slug: "BGIMIKE",
+    name: "BGIMKE",
     bio: "Software engineer with a soft spot for typography and the open web.",
     longBio:
       "Samuel builds tools for writers and reads more than he ships. He believes the best interfaces are the ones you don't notice.",
     avatar: "https://i.pravatar.cc/200?img=12",
   },
   {
-    slug: "mira-iwasaki",
-    name: "Mira Iwasaki",
+    slug: "MIKEAL",
+    name: "MICHEAL",
     bio: "Photographer and essayist based between Kyoto and Lisbon.",
     longBio:
       "Mira's work sits at the intersection of place, memory, and the everyday object. Her essays have appeared in a number of small but loved publications.",
@@ -34,11 +34,17 @@ export const authors = [
 ];
 
 export const categories = [
-  { slug: "essays", name: "Essays" },
-  { slug: "design", name: "Design" },
-  { slug: "engineering", name: "Engineering" },
-  { slug: "field-notes", name: "Field Notes" },
-  { slug: "interviews", name: "Interviews" },
+  { slug: "ARTIST", name: "ARTIST" },
+  { slug: "DESIGN", name: "DESIGN" },
+  { slug: "FASHION", name: "FASHION" },
+  { slug: "LIFESTYLE", name: "LIFESTYLE" },
+  { slug: "MUSIC", name: "MUSIC" },
+  { slug: "SPORTS", name: "SPORTS" },
+  { slug: "ARCHITECTURE", name: "ARCHITECTURE" },
+  { slug: "TECH", name: "TECH" },
+  { slug: "CULTURE", name: "CULTURE" },
+  { slug: "BUSINESS", name: "BUSINESS" },
+  { slug: "UNDR_GRND", name: "UNDR_GRND" },
 ];
 
 export const tags = [
@@ -107,8 +113,8 @@ export const formatDate = (iso) =>
   });
 
 export const SITE = {
-  name: "Quiet Pages",
+  name: "Sting Mag",
   description:
-    "An independent magazine on writing, design, and the slow web. Published occasionally, read closely.",
+    "Sting Mag, takes Sting philosophy to Create to Inspire and Inspire to Change, with an apporach of extreme authenticty and brutal storytelling We bring the truth to the world ",
   url: siteUrl,
 };
