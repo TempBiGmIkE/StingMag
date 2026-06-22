@@ -7,10 +7,9 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "start": "astro preview",
     "build": "astro build",
-    "start": "serve dist -l 10000",
-    "preview": "astro preview",
-    "format": "prettier --write ."
+    "preview": "astro preview --host 0.0.0.0 --port 10000"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",
