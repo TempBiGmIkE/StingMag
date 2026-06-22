@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "start": "serve dist -l 10000",
     "preview": "astro preview",
     "format": "prettier --write ."
   },
